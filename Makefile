@@ -1,4 +1,4 @@
-CPPFLAGS=-O2
+CPPFLAGS=-O2 ${DEBUG_FLAGS}
 all: index search
 search: search.o common.o
 	g++ ${CPPFLAGS} common.o search.o -o search
