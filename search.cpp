@@ -7,6 +7,7 @@
 #include "common.hpp"
 
 using namespace std;
+unsigned int n;
 
 int main(int argc, char ** argv)
 {
@@ -16,16 +17,16 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 	/* read subject string */
-	finput = fopen(argv[1], "r");
+	FILE * finput = fopen(argv[1], "r");
 	if (!finput) {
 		perror("[FATAL] open input file");
 		return 2;
 	}
 	char buf[255];
-	fgets(buf, 255 , fin);
+	fgets(buf, 255 , finput);
 	sscanf(buf, "%u" , &n);
 	char * str = (char *) calloc( n + 1 , sizeof(char) );
-	fgets(str, n + 1, fin);
+	fgets(str, n + 1, finput);
 	fclose(finput);
 	int * istr = transform_to_int(str, n);
 	assert(istr[n] == 1);
@@ -33,12 +34,15 @@ int main(int argc, char ** argv)
 	str = NULL;
 
 	/* read bwt result */
-	findex = fopen(argv[2], "rb");
+	FILE * findex = fopen(argv[2], "rb");
 	if (!findex) {
 		perror("[FATAL] open index file");
 		return 2;
 	}
 	int * sa =  (int *) calloc( n + 1 , sizeof(int) );
 	fread(sa, sizeof(int) , n + 1 , findex);
+	fclose(findex);
+
+
 	return 0;
 }
