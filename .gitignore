@@ -69,3 +69,6 @@ Temporary Items
 # Executable
 search
 index
+
+# Output Indexes
+*.idx
