@@ -16,7 +16,9 @@ int main(int argc, char ** argv)
 		fprintf(stderr, "Usage: %s <input file> <index file>\n" , argv[0]);
 		return 1;
 	}
+
 	/* read subject string */
+	fprintf(stderr, "[INFO] %s\n", "Loading original sequence.");
 	FILE * finput = fopen(argv[1], "r");
 	if (!finput) {
 		perror("[FATAL] open input file");
@@ -34,6 +36,7 @@ int main(int argc, char ** argv)
 	str = NULL;
 
 	/* read bwt result */
+	fprintf(stderr, "[INFO] %s\n", "Loading BWT-transformed.");
 	FILE * findex = fopen(argv[2], "rb");
 	if (!findex) {
 		perror("[FATAL] open index file");
