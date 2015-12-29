@@ -4,48 +4,13 @@
 #include <algorithm>
 #include <iostream>
 #include <cassert>
+#include "common.hpp"
 
 using namespace std;
 
 void suffix_array(int * str, int * sa , int n , int m);
 
 unsigned int n;
-
-int * transform_to_int(char * str) {
-	int * a = (int *) calloc( n + 1 , sizeof(int) );
-	int p = 0;
-	for (char * c = str ; *c ; ++c) 
-	{
-		bool flag = true;
-		switch (*c)
-		{
-			case 'A':
-				a[p] = 2;
-				break;
-			case 'T':
-				a[p] = 3;
-				break;
-			case 'C':
-				a[p] = 4;
-				break;
-			case 'G':
-				a[p] = 5;
-				break;
-			default:
-				//fixme: something wrong with the input
-				n = p;
-				flag = false;
-				break;
-				fprintf(stderr, "[FATAL] unexpected input: '%c' at %d\n", *c , p);
-				abort();
-		}
-		if (!flag)
-			break;
-		++p;
-	}
-	a[p++] = 1;
-	return a;
-}
 
 int main(int argc , char ** argv)
 {
@@ -71,7 +36,7 @@ int main(int argc , char ** argv)
 	fgets(str, n + 1, fin);
 	fprintf(stderr, "Length: %u, first character: %c\n", n, str[0]);
 	fclose(fin);
-	int * istr = transform_to_int(str);
+	int * istr = transform_to_int(str, n);
 	assert(istr[n] == 1);
 	free(str);
 	int * sa =  (int *) calloc( n + 1 , sizeof(int) );
