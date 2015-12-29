@@ -45,19 +45,4 @@ int main(int argc , char ** argv)
 	fclose(fout);
 	free(sa);
 	return 0;
-	/*
-	char buf[1000];
-	gets(buf);
-	int sa[1000];
-	memset(sa , 0 ,sizeof sa);
-	int maxc = 0;
-	int n = strlen(buf);
-	int str[1000];
-	for (int i = 0 ; i < n ; ++i)
-		str[i] = buf[i], maxc = max(maxc, str[i]);
-	suffix_array(str, sa, n , maxc);
-	for (int i = 0 ; i < n; ++i)
-		cerr << sa[i] << ' ' << ( (char) str[(sa[i] + n - 1) % n] ) << endl;
-	return 0;	
-	*/
 }
