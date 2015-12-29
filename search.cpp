@@ -90,27 +90,32 @@ int main(int argc, char ** argv)
     int * c = (int *) calloc( 7 , sizeof(int));
     for (int i = 2 ; i <= 6 ; ++i)
         c[i] = c[i - 1] + occ[i - 1][n + 1];
+    fprintf(stderr, "[INFO] %s\n", "Ready for queries.");
 
-
-    gets(buf);
-    unsigned int p_len = strlen(buf);
-    int * p = transform_to_int(buf, p_len);
-    pair<int, int> ret = count(seq, c , occ, p, p_len);
-    if (ret.first <= ret.second)
-    {
-        int * occurences = (int *) calloc(ret.second - ret.first + 1, sizeof(int));
-        int * op = occurences;
-        fprintf(stderr, "Occurrences: ");
-        for (int i = ret.first ; i <= ret.second ; ++i)
-        {
-            *op++ = sa[i];
-        }
-        int * p_end = op;
-        sort(occurences , p_end);
-        for (op = occurences ; op != p_end ; ++op)
-            fprintf(stderr, op == occurences?"%d" : ", %d", *op);
-        fprintf(stderr, "\n");
-    }
-    free(p);
+    char * input = (char* ) malloc(8192);
+	while (gets(input))
+	{
+	    unsigned int p_len = strlen(input);
+	    int * p = transform_to_int(input, p_len);
+	    pair<int, int> ret = count(seq, c , occ, p, p_len);
+	    if (ret.first)
+	    {
+	        int * occurences = (int *) calloc(ret.second - ret.first + 1, sizeof(int));
+	        int * op = occurences;
+	        printf("%d Occurrence(s): ", ret.second - ret.first + 1);
+	        for (int i = ret.first ; i <= ret.second ; ++i)
+	        {
+	            *op++ = sa[i];
+	        }
+	        int * p_end = op;
+	        sort(occurences , p_end);
+	        for (op = occurences ; op != p_end ; ++op)
+	            printf(op == occurences?"%d" : ", %d", *op);
+	        printf("\n");
+	    } else {
+	    	printf("No occurences found.");
+	    }
+	    free(p);
+	}
     return 0;
 }
