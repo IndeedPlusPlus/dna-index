@@ -77,7 +77,7 @@ int main(int argc, char ** argv)
     free(istr);
     istr = NULL;
 
-    /* creating FP index */
+    /* creating LF index */
     fprintf(stderr, "[INFO] %s\n", "Creating index.");
     int ** occ = (int **) calloc( 6 , sizeof(int *) );
     for (int i = 1 ; i <= 5 ; ++i)
