@@ -9,7 +9,7 @@
 
 using namespace std;
 unsigned int n;
-pair<int, int> count(int * seq, int * C , int ** occ , int * pattern, int p)
+pair<int, int> count(int * C , int ** occ , int * pattern, int p)
 {
     int c = pattern[p - 1];
     int i = p - 1;
@@ -74,6 +74,8 @@ int main(int argc, char ** argv)
     fclose(findex);
     for (int i = 0 ; i < n + 1 ; ++i)
         seq[i] = istr[ (sa[i] + (n+1) - 1) % (n+1) ];
+    free(istr);
+    istr = NULL;
 
     /* creating FP index */
     fprintf(stderr, "[INFO] %s\n", "Creating index.");
@@ -87,17 +89,30 @@ int main(int argc, char ** argv)
             if (j == seq[i])
                 ++occ[j][i + 1];
         }
+    free(seq);
+    seq = NULL;
     int * c = (int *) calloc( 7 , sizeof(int));
     for (int i = 2 ; i <= 6 ; ++i)
         c[i] = c[i - 1] + occ[i - 1][n + 1];
     fprintf(stderr, "[INFO] %s\n", "Ready for queries.");
-
-    char * input = (char* ) malloc(8192);
-	while (gets(input))
+    const size_t BUF_SIZE = 8192;
+    char * input = (char* ) malloc(BUF_SIZE);
+	while (fgets(input, BUF_SIZE, stdin))
 	{
+        int buf_size = BUF_SIZE;
 	    unsigned int p_len = strlen(input);
+        while (input[p_len - 1] != '\n') {
+            buf_size *= 2;
+            input = (char *) realloc(input, buf_size);
+            if (!fgets(input + p_len , buf_size - p_len, stdin))
+                break;
+            p_len = strlen(input);
+        }
+        input[p_len - 1] = 0;
+        --p_len;
+        input = (char *) realloc(input, p_len + 1);
 	    int * p = transform_to_int(input, p_len);
-	    pair<int, int> ret = count(seq, c , occ, p, p_len);
+	    pair<int, int> ret = count(c , occ, p, p_len);
 	    if (ret.first)
 	    {
 	        int * occurences = (int *) calloc(ret.second - ret.first + 1, sizeof(int));
@@ -112,10 +127,12 @@ int main(int argc, char ** argv)
 	        for (op = occurences ; op != p_end ; ++op)
 	            printf(op == occurences?"%d" : ", %d", *op);
 	        printf("\n");
+            free(occurences);
 	    } else {
-	    	printf("No occurences found.");
+	    	printf("No occurences found.\n");
 	    }
 	    free(p);
+        input = (char *) realloc(input, BUF_SIZE);
 	}
     return 0;
 }
